@@ -6,33 +6,79 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXFileReference section */
-		C4A45A22308EC75200F238F9 /* Solfegio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solfegio.app; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+/* Begin PBXBuildFile section */
+		C437E0A7308F84AD002FEADC /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C437E0A6308F84AD002FEADC /* KeyboardHelper.swift */; };
+		C437E0A9308F9FD5002FEADC /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C437E0A8308F9FD5002FEADC /* MainScreen.swift */; };
+		C437E0AB308FCB4F002FEADC /* Timbre.swift in Sources */ = {isa = PBXBuildFile; fileRef = C437E0AA308FCB4F002FEADC /* Timbre.swift */; };
+		C437E0AD308FD0BC002FEADC /* GeneralUser GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = C437E0AC308FD0BC002FEADC /* GeneralUser GS.sf2 */; };
+		C45FD06C308EF79600D488EB /* NoteWhiteKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */; };
+		C45FD06E308EF97500D488EB /* NoteBlackKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06D308EF97500D488EB /* NoteBlackKey.swift */; };
+		C45FD070308F01F300D488EB /* PianoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06F308F01F300D488EB /* PianoEngine.swift */; };
+		C4A45A34308EC78200F238F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4A45A30308EC78200F238F9 /* Assets.xcassets */; };
+		C4A45A35308EC78200F238F9 /* PianoKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */; };
+		C4A45A36308EC78200F238F9 /* SolfegioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A45A32308EC78200F238F9 /* SolfegioApp.swift */; };
+		C4C55ED6308EDE1D00BD95FA /* SwiftMIDIFile in Frameworks */ = {isa = PBXBuildFile; productRef = C4C55ED5308EDE1D00BD95FA /* SwiftMIDIFile */; };
+/* End PBXBuildFile section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		C4A45A24308EC75200F238F9 /* Solfegio */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Solfegio;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
+/* Begin PBXFileReference section */
+		C437E0A6308F84AD002FEADC /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
+		C437E0A8308F9FD5002FEADC /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		C437E0AA308FCB4F002FEADC /* Timbre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timbre.swift; sourceTree = "<group>"; };
+		C437E0AC308FD0BC002FEADC /* GeneralUser GS.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeneralUser GS.sf2"; sourceTree = "<group>"; };
+		C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteWhiteKey.swift; sourceTree = "<group>"; };
+		C45FD06D308EF97500D488EB /* NoteBlackKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteBlackKey.swift; sourceTree = "<group>"; };
+		C45FD06F308F01F300D488EB /* PianoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoEngine.swift; sourceTree = "<group>"; };
+		C4A45A22308EC75200F238F9 /* Solfegio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solfegio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4A45A30308EC78200F238F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoKeyboard.swift; sourceTree = "<group>"; };
+		C4A45A32308EC78200F238F9 /* SolfegioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolfegioApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C4A45A1F308EC75200F238F9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C55ED6308EDE1D00BD95FA /* SwiftMIDIFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C44A2D213090205B00AA2B1C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C437E0A8308F9FD5002FEADC /* MainScreen.swift */,
+				C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */,
+				C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */,
+				C45FD06D308EF97500D488EB /* NoteBlackKey.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C44A2D223090207400AA2B1C /* Sound Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				C437E0AC308FD0BC002FEADC /* GeneralUser GS.sf2 */,
+			);
+			path = "Sound Libraries";
+			sourceTree = "<group>";
+		};
+		C44A2D23309020A300AA2B1C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C45FD06F308F01F300D488EB /* PianoEngine.swift */,
+				C437E0A6308F84AD002FEADC /* KeyboardHelper.swift */,
+				C437E0AA308FCB4F002FEADC /* Timbre.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C4A45A19308EC75200F238F9 = {
 			isa = PBXGroup;
 			children = (
-				C4A45A24308EC75200F238F9 /* Solfegio */,
+				C4A45A33308EC78200F238F9 /* Solfegio */,
 				C4A45A23308EC75200F238F9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +89,18 @@
 				C4A45A22308EC75200F238F9 /* Solfegio.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C4A45A33308EC78200F238F9 /* Solfegio */ = {
+			isa = PBXGroup;
+			children = (
+				C4A45A32308EC78200F238F9 /* SolfegioApp.swift */,
+				C4A45A30308EC78200F238F9 /* Assets.xcassets */,
+				C44A2D213090205B00AA2B1C /* Views */,
+				C44A2D23309020A300AA2B1C /* Model */,
+				C44A2D223090207400AA2B1C /* Sound Libraries */,
+			);
+			path = Solfegio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,11 +118,9 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				C4A45A24308EC75200F238F9 /* Solfegio */,
-			);
 			name = Solfegio;
 			packageProductDependencies = (
+				C4C55ED5308EDE1D00BD95FA /* SwiftMIDIFile */,
 			);
 			productName = Solfegio;
 			productReference = C4A45A22308EC75200F238F9 /* Solfegio.app */;
@@ -94,6 +150,9 @@
 			);
 			mainGroup = C4A45A19308EC75200F238F9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C4C55ED4308EDE1D00BD95FA /* XCRemoteSwiftPackageReference "swift-midi-file" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C4A45A23308EC75200F238F9 /* Products */;
 			projectDirPath = "";
@@ -109,6 +168,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C437E0AD308FD0BC002FEADC /* GeneralUser GS.sf2 in Resources */,
+				C4A45A34308EC78200F238F9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +180,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C437E0A7308F84AD002FEADC /* KeyboardHelper.swift in Sources */,
+				C437E0A9308F9FD5002FEADC /* MainScreen.swift in Sources */,
+				C437E0AB308FCB4F002FEADC /* Timbre.swift in Sources */,
+				C45FD070308F01F300D488EB /* PianoEngine.swift in Sources */,
+				C45FD06C308EF79600D488EB /* NoteWhiteKey.swift in Sources */,
+				C45FD06E308EF97500D488EB /* NoteBlackKey.swift in Sources */,
+				C4A45A35308EC78200F238F9 /* PianoKeyboard.swift in Sources */,
+				C4A45A36308EC78200F238F9 /* SolfegioApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,11 +325,14 @@
 				DEVELOPMENT_TEAM = 4ZCL8VA9QT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Сольфеджио";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -269,6 +341,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = FedorKomov.Solfegio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -288,11 +364,14 @@
 				DEVELOPMENT_TEAM = 4ZCL8VA9QT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Сольфеджио";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,6 +380,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = FedorKomov.Solfegio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -332,6 +415,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C4C55ED4308EDE1D00BD95FA /* XCRemoteSwiftPackageReference "swift-midi-file" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/swift-midi-file";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C4C55ED5308EDE1D00BD95FA /* SwiftMIDIFile */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4C55ED4308EDE1D00BD95FA /* XCRemoteSwiftPackageReference "swift-midi-file" */;
+			productName = SwiftMIDIFile;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C4A45A1A308EC75200F238F9 /* Project object */;
 }
