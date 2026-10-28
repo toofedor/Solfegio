@@ -25,7 +25,7 @@ struct MainScreen: View {
       }
       
       HStack {
-        Text("Velocity:")
+        Text("p ~ f  ")
         Slider(value: $velocityFloat, in: 0...127, step: 1)
           .onChange(of: velocityFloat) { oldValue, newValue in
             velocity = UInt8(velocityFloat)
@@ -35,7 +35,7 @@ struct MainScreen: View {
       }
         .padding()
       
-      PianoKeyboard(audioEngine: $audioEngine, velocity: $velocity, firstKey: 48, lastKey: 88)
+      TuneExercise(audioEngine: audioEngine, velocity: $velocity)
     }
   }
 }

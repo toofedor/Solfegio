@@ -29,6 +29,7 @@ struct PianoKeyboard: View {
   }
   
   
+  
   var body: some View {
     HStack(alignment: .top, spacing: 0) {
       let offset1: Double = whiteWidth / 10

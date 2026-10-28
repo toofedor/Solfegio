@@ -15,6 +15,17 @@ class PianoAudioEngine: ObservableObject {
   private let engine = AVAudioEngine()
   private let sampler = AVAudioUnitSampler()
   
+  func playExercise(_ exercise: Exercise, tempo: Tempo) {
+    Task {
+      for note in exercise.tune {
+        noteOn(note: note.pitch, velocity: note.velocity)
+  //      Sleep Timer note.duration * temp
+        try await Task.sleep(nanoseconds: UInt64(1000000000.0 * tempo.wholeInSeconds * note.duration.rawValue))
+        noteOff(note: note.pitch)
+      }
+    }
+  }
+  
   init() {
     
     engine.attach(sampler)

@@ -11,6 +11,8 @@
 		C437E0A9308F9FD5002FEADC /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C437E0A8308F9FD5002FEADC /* MainScreen.swift */; };
 		C437E0AB308FCB4F002FEADC /* Timbre.swift in Sources */ = {isa = PBXBuildFile; fileRef = C437E0AA308FCB4F002FEADC /* Timbre.swift */; };
 		C437E0AD308FD0BC002FEADC /* GeneralUser GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = C437E0AC308FD0BC002FEADC /* GeneralUser GS.sf2 */; };
+		C44A2D2530903B6F00AA2B1C /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44A2D2430903B6F00AA2B1C /* Exercise.swift */; };
+		C44A2D27309042BD00AA2B1C /* TuneExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44A2D26309042BD00AA2B1C /* TuneExercise.swift */; };
 		C45FD06C308EF79600D488EB /* NoteWhiteKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */; };
 		C45FD06E308EF97500D488EB /* NoteBlackKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06D308EF97500D488EB /* NoteBlackKey.swift */; };
 		C45FD070308F01F300D488EB /* PianoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FD06F308F01F300D488EB /* PianoEngine.swift */; };
@@ -18,6 +20,10 @@
 		C4A45A35308EC78200F238F9 /* PianoKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */; };
 		C4A45A36308EC78200F238F9 /* SolfegioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A45A32308EC78200F238F9 /* SolfegioApp.swift */; };
 		C4C55ED6308EDE1D00BD95FA /* SwiftMIDIFile in Frameworks */ = {isa = PBXBuildFile; productRef = C4C55ED5308EDE1D00BD95FA /* SwiftMIDIFile */; };
+		C4C60BDA309176DF00EE2E90 /* KeyScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C60BD9309176DF00EE2E90 /* KeyScale.swift */; };
+		C4C60BDC3091770300EE2E90 /* NotePitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C60BDB3091770300EE2E90 /* NotePitch.swift */; };
+		C4C60BDE309177E700EE2E90 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C60BDD309177E700EE2E90 /* Note.swift */; };
+		C4C60BE0309181AC00EE2E90 /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C60BDF309181AC00EE2E90 /* Temp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +31,8 @@
 		C437E0A8308F9FD5002FEADC /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		C437E0AA308FCB4F002FEADC /* Timbre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timbre.swift; sourceTree = "<group>"; };
 		C437E0AC308FD0BC002FEADC /* GeneralUser GS.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeneralUser GS.sf2"; sourceTree = "<group>"; };
+		C44A2D2430903B6F00AA2B1C /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
+		C44A2D26309042BD00AA2B1C /* TuneExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneExercise.swift; sourceTree = "<group>"; };
 		C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteWhiteKey.swift; sourceTree = "<group>"; };
 		C45FD06D308EF97500D488EB /* NoteBlackKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteBlackKey.swift; sourceTree = "<group>"; };
 		C45FD06F308F01F300D488EB /* PianoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoEngine.swift; sourceTree = "<group>"; };
@@ -32,6 +40,10 @@
 		C4A45A30308EC78200F238F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoKeyboard.swift; sourceTree = "<group>"; };
 		C4A45A32308EC78200F238F9 /* SolfegioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolfegioApp.swift; sourceTree = "<group>"; };
+		C4C60BD9309176DF00EE2E90 /* KeyScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyScale.swift; sourceTree = "<group>"; };
+		C4C60BDB3091770300EE2E90 /* NotePitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotePitch.swift; sourceTree = "<group>"; };
+		C4C60BDD309177E700EE2E90 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		C4C60BDF309181AC00EE2E90 /* Temp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				C437E0A8308F9FD5002FEADC /* MainScreen.swift */,
+				C44A2D26309042BD00AA2B1C /* TuneExercise.swift */,
 				C4A45A31308EC78200F238F9 /* PianoKeyboard.swift */,
 				C45FD06B308EF79600D488EB /* NoteWhiteKey.swift */,
 				C45FD06D308EF97500D488EB /* NoteBlackKey.swift */,
@@ -71,6 +84,11 @@
 				C45FD06F308F01F300D488EB /* PianoEngine.swift */,
 				C437E0A6308F84AD002FEADC /* KeyboardHelper.swift */,
 				C437E0AA308FCB4F002FEADC /* Timbre.swift */,
+				C44A2D2430903B6F00AA2B1C /* Exercise.swift */,
+				C4C60BDD309177E700EE2E90 /* Note.swift */,
+				C4C60BDB3091770300EE2E90 /* NotePitch.swift */,
+				C4C60BD9309176DF00EE2E90 /* KeyScale.swift */,
+				C4C60BDF309181AC00EE2E90 /* Temp.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,14 +198,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C60BDA309176DF00EE2E90 /* KeyScale.swift in Sources */,
 				C437E0A7308F84AD002FEADC /* KeyboardHelper.swift in Sources */,
+				C44A2D27309042BD00AA2B1C /* TuneExercise.swift in Sources */,
 				C437E0A9308F9FD5002FEADC /* MainScreen.swift in Sources */,
 				C437E0AB308FCB4F002FEADC /* Timbre.swift in Sources */,
+				C4C60BDE309177E700EE2E90 /* Note.swift in Sources */,
 				C45FD070308F01F300D488EB /* PianoEngine.swift in Sources */,
+				C4C60BE0309181AC00EE2E90 /* Temp.swift in Sources */,
 				C45FD06C308EF79600D488EB /* NoteWhiteKey.swift in Sources */,
 				C45FD06E308EF97500D488EB /* NoteBlackKey.swift in Sources */,
+				C4C60BDC3091770300EE2E90 /* NotePitch.swift in Sources */,
 				C4A45A35308EC78200F238F9 /* PianoKeyboard.swift in Sources */,
 				C4A45A36308EC78200F238F9 /* SolfegioApp.swift in Sources */,
+				C44A2D2530903B6F00AA2B1C /* Exercise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
