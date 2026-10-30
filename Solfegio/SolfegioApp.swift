@@ -11,9 +11,13 @@ import SwiftUI
 
 @main
 struct SolfegioApp: App {
+  @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @StateObject var musicSettings: MusicSettings = MusicSettings()
   var body: some Scene {
     WindowGroup {
       MainScreen()
     }
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
   }
 }

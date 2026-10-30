@@ -8,60 +8,74 @@
 import SwiftUI
 
 struct TuneExercise: View {
-  @State var audioEngine: PianoAudioEngine = PianoAudioEngine()
-  @State var selIns: Int = 2
+  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var musicSettings: MusicSettings
   @State var exercise: Exercise = Exercise()
-  @State var tempo: Tempo = Tempo()
-  @Binding var velocity: UInt8
-  @State var tempoLog: Double = 3.584962500721
-    var body: some View {
-      VStack{
-        HStack(spacing: 50) {
-          Button { 
-            audioEngine.playExercise(exercise, tempo: tempo)
-          } label: { 
-            Image(systemName: "play")
-          }
-          
-          Button { 
-            exercise.randomTune(diapason: 56...70, noteQuantity: 4, keyScale: KeyScale(tonic: Note.NotePitch(.A), scale: .mollHarmonic))
-          } label: { 
-            Image(systemName: "arrow.clockwise")
-          }
-          
-          
+  @State var noteQuantity: Int = 1
+  @State var showSettings: Bool = false
+  var body: some View {
+    VStack(spacing: 3) {
+      
+      MusicSettingsView()
+      
+      HStack(spacing: 0) {
+        Button { 
+          audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
+        } label: { 
+          Image(systemName: "memories")
+            .resizable()
+            .frame(width: 30, height: 30)
         }
+        .padding(.horizontal, 30)
         
-        HStack(spacing: 5) {
-          Picker("Темп", selection: $tempo.countingDuration) {
-            ForEach(Note.NoteDuration.allCases) { note in
-              Text("\(note.name)").tag(note)
-            }
-          }
-          .frame(width: 100)
-          Text("Темп")
-          Slider(value: $tempoLog, in: 1...5.644, step: 0.002)
-            .onChange(of: tempoLog) { _, _ in
-              tempo.bpm = (10 * pow(2, tempoLog)).rounded()
-            }
-            .frame(width: 140)
-          Text("\(Int(tempo.bpm))")
-            .frame(width: 40)
+        Button { 
+          exercise.randomTune(diapason: UInt8(musicSettings.firstActive)...UInt8(musicSettings.lastActive), noteQuantity: noteQuantity, keyScale: KeyScale(tonic: musicSettings.tonic, scale: musicSettings.scale))
+          
+          audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
+        } label: { 
+          Image(systemName: "forward.fill")
+            .resizable()
+            .frame(width: 35, height: 25)
         }
-        .padding()
+        .padding(.horizontal, 20)
         
-        
-        
-        PianoKeyboard(audioEngine: $audioEngine, velocity: $velocity, firstKey: 56, lastKey: 70)
+        Picker("Всего нот", selection: $noteQuantity) {
+          ForEach(1..<21) { n in
+            Text("\(n)")
+              .tag(n)
+          }
+        }
+        Text("нот\(noteQuantity ∈ [2, 3, 4] ? "ы" : (noteQuantity == 1 ? "а" : ""))")
+          .padding(.leading, -10)
       }
-      .onAppear {
-        if exercise.tune.isEmpty {
-          exercise.randomTune(diapason: 56...70, noteQuantity: 4, keyScale: KeyScale(tonic: Note.NotePitch(.A), scale: .mollHarmonic))
-        }
+      
+      if musicSettings.refresh {
+        PianoKeyboard()
+      } else {
+        PianoKeyboard()
+      }
+      
+    }
+    .onAppear {
+      if exercise.tune.isEmpty {
+        exercise.randomTune(diapason: 56...70, noteQuantity: noteQuantity, keyScale: KeyScale(tonic: Note.WithAlteration(.A), scale: .mollHarmonic))
       }
     }
+  }
 }
 
-//#Preview {
-//    TuneExercise()
-//}
+#Preview {
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
+  MainScreen()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
+}
+
+#Preview {
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
+  TuneExercise()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
+}

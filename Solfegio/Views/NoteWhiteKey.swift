@@ -8,23 +8,27 @@
 import SwiftUI
 
 struct NoteWhiteKey: View {
+  @EnvironmentObject var musicSettings: MusicSettings
+  @EnvironmentObject var audioEngine: PianoAudioEngine
   @State var width: Double
   @State var height: Double
   @Binding var keyboard: KeyboardHelper
-  @State var audioEngine: PianoAudioEngine
   let note: Int
-  @Binding var velocity: UInt8
+  @State var inDiapasone: Bool = false
+  
   var body: some View {
     ZStack {
       RoundedRectangle(cornerRadius: 5)
         .fill(keyboard.keys[note].isOn ? .whitePressed : .white)
-        .strokeBorder(.gray, lineWidth: 0.5)
+        .fill(.blue.opacity(inDiapasone ? 0.1 : 0))
+        .strokeBorder( inDiapasone ? .black : .gray, lineWidth: inDiapasone ? 0.7 : 0.5)
         .frame(width: width, height: height)
+      
       
       KeyTouchView(
         onPress: {
           keyboard.keys[note].isOn = true
-          audioEngine.noteOn(note: UInt8(note), velocity: velocity)
+          audioEngine.noteOn(note: UInt8(note), velocity: musicSettings.velocity)
         },
         onRelease: {
           keyboard.keys[note].isOn = false
@@ -34,11 +38,6 @@ struct NoteWhiteKey: View {
     }
   }
 }
-
-#Preview {
-//  NoteWhiteKey(width: 50, height: 200, keyboard: , audioEngine: PianoAudioEngine(), note: 2)
-}
-
 
 import SwiftUI
 import UIKit
@@ -84,4 +83,12 @@ final class TouchTrackingUIView: UIView {
         isActive = false
         onRelease?()
     }
+}
+
+#Preview {
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
+  TuneExercise()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
 }

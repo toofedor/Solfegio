@@ -14,14 +14,21 @@ class PianoAudioEngine: ObservableObject {
   
   private let engine = AVAudioEngine()
   private let sampler = AVAudioUnitSampler()
+  var freechannals: [Bool] = [true, true, true, true,  true, true, true, true, 
+                              true, true, true, true,  true, true, true, true]
   
   func playExercise(_ exercise: Exercise, tempo: Tempo) {
     Task {
-      for note in exercise.tune {
-        noteOn(note: note.pitch, velocity: note.velocity)
-  //      Sleep Timer note.duration * temp
-        try await Task.sleep(nanoseconds: UInt64(1000000000.0 * tempo.wholeInSeconds * note.duration.rawValue))
-        noteOff(note: note.pitch)
+      let slot: Int? = freechannals.firstIndex(where: { $0 }) ?? nil
+      if let slot {
+        freechannals[slot] = false
+        let channal: UInt8 = UInt8(slot)
+        for note in exercise.tune {
+          noteOn(note: note.pitch, velocity: note.velocity, onChannel: channal)
+          try await Task.sleep(nanoseconds: UInt64(1000000000.0 * tempo.wholeInSeconds * note.duration.rawValue))
+          noteOff(note: note.pitch, onChannel: channal)
+        }
+        freechannals[slot] = true
       }
     }
   }
@@ -36,7 +43,7 @@ class PianoAudioEngine: ObservableObject {
       do {
         try sampler.loadSoundBankInstrument(
           at: bankURL,
-          program: 2, // 0 = Acoustic Grand Piano
+          program: 2, 
           bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB),
           bankLSB: UInt8(kAUSampler_DefaultBankLSB)
         )
@@ -58,7 +65,7 @@ class PianoAudioEngine: ObservableObject {
       do {
         try sampler.loadSoundBankInstrument(
           at: bankURL,
-          program: progNum, // 0 = Acoustic Grand Piano
+          program: progNum, 
           bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB),
           bankLSB: UInt8(kAUSampler_DefaultBankLSB)
         )
@@ -75,11 +82,12 @@ class PianoAudioEngine: ObservableObject {
     
   }
   
-  func noteOn(note: UInt8, velocity: UInt8 = 64) {
-    sampler.startNote(note, withVelocity: velocity, onChannel: 0)
+  func noteOn(note: UInt8, velocity: UInt8 = 64, onChannel: UInt8 = 0) {
+    sampler.startNote(note, withVelocity: velocity, onChannel: onChannel)
+//    print("\(note) \(velocity) \(onChannel)")
   }
   
-  func noteOff(note: UInt8) {
-    sampler.stopNote(note, onChannel: 0)
+  func noteOff(note: UInt8, onChannel: UInt8 = 0) {
+    sampler.stopNote(note, onChannel: onChannel)
   }
 }

@@ -9,24 +9,16 @@ import SwiftUI
 import SwiftMIDIFile
 
 struct PianoKeyboard: View {
-  @Binding var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var musicSettings: MusicSettings
   @State var keyboard: KeyboardHelper = KeyboardHelper()
-  let firstKey: Int
-  let lastKey: Int
-  @Binding var velocity: UInt8
+
   
   let whiteHeight: Double = 250
   let whiteWidth: Double = 45
-  let heightPortion: Double = 2/3
+  let heightPortion: Double = 0.65
   let blackPortion: Double = 0.75
   
-  init(audioEngine: Binding<PianoAudioEngine>, velocity: Binding<UInt8>, firstKey: Int = 48, lastKey: Int = 72) {
-    self._audioEngine = audioEngine
-    self._velocity = velocity
-    self.firstKey = firstKey - ((firstKey % 12) ∈ [1, 3, 6, 8, 10] ? 1 : 0)
-    self.lastKey = lastKey + 1 + ((lastKey % 12) ∈ [1, 3, 6, 8, 10] ? 1 : 0)
-    //
-  }
   
   
   
@@ -36,6 +28,9 @@ struct PianoKeyboard: View {
       let offset6: Double = whiteWidth / 7
       let blackWidth: Double = whiteWidth * blackPortion
       let blackHeight: Double = whiteHeight * heightPortion
+      let whiteCount: Int = Array(musicSettings.firstActive..<musicSettings.lastActive).count(where: { $0 !∈ [1, 3, 6, 8, 10]})
+      let firstKey = musicSettings.firstActive - ((musicSettings.firstActive % 12) ∈ [1, 3, 6, 8, 10] ? 1 : 0)
+      let lastKey = musicSettings.lastActive + 1 + ((musicSettings.lastActive % 12) ∈ [1, 3, 6, 8, 10] ? 1 : 0)
       
       ZStack {
         // White keys
@@ -43,7 +38,7 @@ struct PianoKeyboard: View {
           ForEach(firstKey..<lastKey) { note in
             let n = note % 12
             if n !∈ [1, 3, 6, 8, 10] {
-              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, note: note)
             }
           }
         }
@@ -61,23 +56,23 @@ struct PianoKeyboard: View {
               VStack {}
                 .frame(width: whiteWidth, height: whiteHeight)
             case 1: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset1, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset1, keyboard: $keyboard, note: note)
             }
             .frame(width: 0)
             case 3: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset1, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset1, keyboard: $keyboard, note: note)
             }
             .frame(width: 0)
             case 6: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset6, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset6, keyboard: $keyboard, note: note)
             }
             .frame(width: 0)
             case 8: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: 0, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: 0, keyboard: $keyboard, note: note)
             }
             .frame(width: 0)
             case 10: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset6, keyboard: $keyboard, audioEngine: audioEngine, note: note, velocity: $velocity)
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset6, keyboard: $keyboard, note: note)
             }
             .frame(width: 0)
             default: HStack{}
@@ -85,29 +80,42 @@ struct PianoKeyboard: View {
           }
         }
         .frame(height: blackHeight)
-        
       }
-      
+      .frame(width: Double(whiteCount) * whiteWidth/2)
     }
     .padding()
   }
 }
 
 #Preview { 
-  MainScreen()
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
+  TuneExercise()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
 }
 
 #Preview {
-  @Previewable @State var audioEngine = PianoAudioEngine()
-  PianoKeyboard(audioEngine: $audioEngine, velocity: .constant(80))
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
+  PianoKeyboard()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
 }
 
 infix operator ∈
 func ∈ <T: Equatable>(value: T, collection: [T]) -> Bool {
     collection.contains(value)
 }
+func ∈ <T: Comparable>(value: T, range: ClosedRange<T>) -> Bool {
+  range.contains(value)
+}
+
 
 infix operator !∈
 func !∈ <T: Equatable>(value: T, collection: [T]) -> Bool {
     !collection.contains(value)
+}
+func !∈ <T: Comparable>(value: T, range: ClosedRange<T>) -> Bool {
+    !range.contains(value)
 }

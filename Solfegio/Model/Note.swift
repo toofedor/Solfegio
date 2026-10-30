@@ -49,7 +49,7 @@ class Note {
       switch self {
       case .n1  : "Целая"
       case .n2  : "Половинная"
-      case .n4  : "Четверная"
+      case .n4  : "Четвертная"
       case .n8  : "8-я"
       case .n16 : "16-я"
       case .n32 : "32-я"
@@ -75,11 +75,26 @@ class Note {
     
   }
   
-  class NotePitch {
+  class WithAlteration {
     var noteName: noteShortName
-    var alteration: UInt8
+    var alteration: Int
     
-    init(_ noteName: noteShortName, alt alteration: UInt8 = 0) {
+    var ruName: String { 
+      var sign: String = ""
+      switch alteration {
+//      case -2: sign = "-дубль-бемоль"
+//      case -1: sign = "-бемоль"
+      case 0: sign = ""
+//      case 1: sign = "-диез"
+//      case 2: sign = "-дубль-диез"
+      case 1...: sign = String(repeating: "𝄪", count: alteration / 2) + String(repeating: "♯", count: alteration % 2)
+        
+      default: sign = String(repeating: "♭", count: -alteration)
+      }
+      return noteName.ruName + sign 
+    }
+    
+    init(_ noteName: noteShortName = .A, alt alteration: Int = 0) {
       self.noteName = noteName
       self.alteration = alteration
     }
@@ -92,6 +107,7 @@ class Note {
       case G
       case A
       case B
+      case H
       
       var midi: UInt8 {
         switch self {
@@ -101,10 +117,23 @@ class Note {
         case .F: return 5
         case .G: return 7
         case .A: return 9
-        case .B: return 11
+        case .B: return 10
+        case .H: return 11
         }
       }
-    
+      
+      var ruName: String {
+        switch self {
+        case .C: return "До"
+        case .D: return "Ре"
+        case .E: return "Ми"
+        case .F: return "Фа"
+        case .G: return "Соль"
+        case .A: return "Ла"
+        case .B: return "Си-бемоль"
+        case .H: return "Си"
+        }
+      }
     }
     
   }

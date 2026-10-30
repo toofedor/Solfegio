@@ -8,38 +8,20 @@
 import SwiftUI
 
 struct MainScreen: View {
-  @State var audioEngine: PianoAudioEngine = PianoAudioEngine()
-  @State var selIns: Int = 2
-  @State var velocity: UInt8 = 64
-  @State var velocityFloat: Double = 64
   var body: some View {
-    VStack{
-      Picker("Тембр", selection: $selIns) {
-        ForEach(0..<128, id: \.self) { number in
-          Text("\(number.timbre)").tag(number)
-        }
-      }
-      .pickerStyle(.menu)
-      .onChange(of: selIns) { oldValue, newValue in
-        audioEngine.changeProgram(progNum: UInt8(selIns))
-      }
       
-      HStack {
-        Text("p ~ f  ")
-        Slider(value: $velocityFloat, in: 0...127, step: 1)
-          .onChange(of: velocityFloat) { oldValue, newValue in
-            velocity = UInt8(velocityFloat)
-            print(velocity)
-          }
-          .frame(width: 260)
-      }
-        .padding()
-      
-      TuneExercise(audioEngine: audioEngine, velocity: $velocity)
-    }
+      TuneExercise()
+    
   }
 }
 
 #Preview {
+  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   MainScreen()
+    .environmentObject(audioEngine)
+    .environmentObject(musicSettings)
 }
+
+
+

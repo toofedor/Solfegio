@@ -8,16 +8,26 @@
 import Foundation
 
 class KeyScale {
-  var tonic: Note.NotePitch
+  var tonic: Note.WithAlteration
   var scale: Scale
   
-  init(tonic: Note.NotePitch, scale: Scale) {
+  init(tonic: Note.WithAlteration = Note.WithAlteration(.A, alt: 0), scale: Scale) {
     self.tonic = tonic
     self.scale = scale
   }
   
+  init(note: Note.WithAlteration.noteShortName = .A, alt: Int = 0, scale: Scale) {
+    self.tonic = Note.WithAlteration(note, alt: alt)
+    self.scale = scale
+  }
+  
+  init(tonic: NoteName = .A, scale: Scale) {
+    self.tonic = tonic.noteWithAlt
+    self.scale = scale
+  }
+  
   func buildPitchSet() -> [UInt8] {
-    let root: UInt8 = tonic.noteName.midi + tonic.alteration
+    let root: UInt8 = UInt8(Int(tonic.noteName.midi) + tonic.alteration)
     var pitchSet: [UInt8] = [root]
     var curNote: UInt8 = root
     while curNote <= 127 {
@@ -35,7 +45,7 @@ class KeyScale {
   }
   
   
-  enum noteName {
+  enum NoteName: String, CaseIterable, Identifiable, Hashable, Equatable {
     case Ases
     case As
     case A
@@ -57,6 +67,8 @@ class KeyScale {
     case Eses
     case Es
     case E
+    case Eis 
+    case Fes
     case F
     case Fis
     case Fisis
@@ -64,7 +76,56 @@ class KeyScale {
     case Ges
     case G
     case Gis
-    case Gisis
+    case Gisis 
+    
+    var nameWithSign: String {
+      switch self {
+      case .Ases : "A♭♭"
+      case .As : "A♭"
+      case .A : "A"
+      case .Ais : "A♯"
+      case .Aisis : "A𝄪"
+      case .Bes : "H♭♭"
+      case .B : "B"
+      case .H : "H"
+      case .His : "H♯"
+      case .Ces : "C♭"
+      case .C : "C"
+      case .Cis : "C♯"
+      case .Cisis : "C𝄪"
+      case .Deses : "D♭♭"
+      case .Des : "D♭"
+      case .D : "D"
+      case .Dis : "D♯"
+      case .Disis : "D𝄪"
+      case .Eses : "E♭♭"
+      case .Es : "E♭"
+      case .E : "E"
+      case .Eis : "E♯"
+      case .Fes : "F♭"
+      case .F : "F"
+      case .Fis : "F♯"
+      case .Fisis : "F𝄪"
+      case .Geses : "G♭♭"
+      case .Ges : "G♭"
+      case .G : "G"
+      case .Gis : "G♯"
+      case .Gisis : "G𝄪"
+      }
+    }
+    
+    var id: String { self.rawValue }
+    
+    var name: String { self.rawValue }
+    
+    static var allKeyScaleNames: [NoteName] {
+      return KeyScale.NoteName.allCases.filter { $0.isKeyScaleName }
+    }
+    
+    var isKeyScaleName: Bool { return (alteration ∈ [-1, 0, 1]) && (self !∈ [.His, .Eis, .Fes]) }
+    
+    var isMollName: Bool { return (alteration ∈ [-1, 0, 1]) && (self !∈ [.His, .Eis, .Fes, .Ces, .Des, .Ges]) }
+    var isDurName: Bool { return (alteration ∈ [-1, 0, 1]) && (self !∈ [.Eis, .Fes, .Gis, .Ais, .His, .Dis, .Eis]) }
     
     var midi: UInt8 {
       switch self {
@@ -89,6 +150,8 @@ class KeyScale {
       case .Eses: return 26
       case .Es: return 27
       case .E: return 28
+      case .Eis: return 29
+      case .Fes: return 28
       case .F: return 29
       case .Fis: return 30
       case .Fisis: return 31
@@ -100,8 +163,11 @@ class KeyScale {
       }
     }
     
+    var noteWithAlt: Note.WithAlteration {
+      return Note.WithAlteration(self.mainNote, alt: self.alteration)
+    }
     
-    var mainNote: noteName {
+    var mainNote: Note.WithAlteration.noteShortName {
       switch self {
       case .Ases: return .A
       case .As: return .A
@@ -109,7 +175,7 @@ class KeyScale {
       case .Ais: return .A
       case .Aisis: return .A
       case .Bes: return .H
-      case .B: return .H
+      case .B: return .B
       case .H: return .H
       case .His: return .H
       case .Ces: return .C
@@ -124,6 +190,8 @@ class KeyScale {
       case .Es: return .E
       case .Eses: return .E
       case .E: return .E
+      case .Eis: return .E
+      case .Fes: return .F
       case .F: return .F
       case .Fis: return .F
       case .Fisis: return .F
@@ -143,7 +211,7 @@ class KeyScale {
       case .Ais: return 1
       case .Aisis: return 2
       case .Bes: return -2
-      case .B: return -1
+      case .B: return 0
       case .H: return 0
       case .His: return 1
       case .Ces: return -1
@@ -158,6 +226,8 @@ class KeyScale {
       case .Es: return -1
       case .Eses: return -2
       case .E: return 0
+      case .Eis: return 1
+      case .Fes: return -1
       case .F: return 0
       case .Fis: return 1
       case .Fisis: return 2
@@ -172,7 +242,7 @@ class KeyScale {
   
   
   
-  enum Scale {
+  enum Scale: String, CaseIterable, Identifiable {
     case durNatural
     case mollNatural
     case durHarmonic
@@ -187,6 +257,8 @@ class KeyScale {
     case chromatic
     case wholetone
     case rimKor
+    
+    var id: String { self.rawValue }
     
     var buildMidi: [UInt8] {
       switch self {
@@ -226,22 +298,43 @@ class KeyScale {
       }
     }
     
+    var name: String {
+      switch self {
+      case .durNatural: "-dur нат."
+      case .mollNatural: "-moll нат."
+      case .durHarmonic: "-dur гарм."
+      case .mollHarmonic: "-moll гарм."
+      case .durMelodic: "-dur мел."
+      case .mollMelodic: "-moll мел."
+      case .durDoubleHarmonic: "-dur дв. гарм"
+      case .mollDoubleHarmonic: "-moll дв. гарм"
+      case .durPentatonic: "-dur пентатоника"
+      case .mollPentatonic: "-moll пентатоника"
+      case .bluesScale: "Блюзовая"
+      case .chromatic: "Хоматическая"
+      case .wholetone: "Целотоновая"
+      case .rimKor: "Уменьшенная"
+      }
+    }
+    
+    var firstLowCase: Bool { return name.starts(with: "-moll") }
+    
     var toneSemitone: [ScaleIntervals] {
       switch self {
-      case .durNatural: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
-      case .mollNatural: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
-      case .durHarmonic: return [.wTone, .wTone, .wTone, .wTone, .wTone, .aug2, .wTone]
-      case .mollHarmonic: return [.wTone, .wTone, .wTone, .wTone, .wTone, .aug2, .wTone]
-      case .durMelodic: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
-      case .mollMelodic: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
-      case .durDoubleHarmonic: return [.wTone, .aug2, .wTone, .wTone, .wTone, .aug2, .wTone]
-      case .mollDoubleHarmonic: return [.wTone, .wTone, .aug2, .wTone, .wTone, .aug2, .wTone]
+      case .durNatural: return [.wTone, .wTone, .hTone, .wTone, .wTone, .wTone, .hTone]
+      case .mollNatural: return [.wTone, .hTone, .wTone, .wTone, .hTone, .wTone, .wTone]
+      case .durHarmonic: return [.wTone, .wTone, .hTone, .wTone, .hTone, .aug2, .hTone]
+      case .mollHarmonic: return [.wTone, .hTone, .wTone, .wTone, .hTone, .aug2, .hTone]
+      case .durMelodic: return [.wTone, .wTone, .hTone, .wTone, .hTone, .wTone, .wTone]
+      case .mollMelodic: return [.wTone, .hTone, .wTone, .wTone, .wTone, .wTone, .hTone]
+      case .durDoubleHarmonic: return [.hTone, .aug2, .hTone, .wTone, .hTone, .aug2, .hTone]
+      case .mollDoubleHarmonic: return [.wTone, .hTone, .aug2, .hTone, .hTone, .aug2, .hTone]
       case .durPentatonic: return [.wTone, .wTone, .mTh, .wTone, .mTh]
       case .mollPentatonic: return [.mTh, .wTone, .wTone, .mTh, .wTone]
       case .bluesScale: return [.mTh, .wTone, .hTone, .aug1, .mTh, .wTone]
-      case .chromatic: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
+      case .chromatic: return [.hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone, .hTone]
       case .wholetone: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
-      case .rimKor: return [.wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone, .wTone]
+      case .rimKor: return [.wTone, .hTone, .wTone, .hTone, .wTone, .hTone, .wTone, .hTone]
       }
     }
     
@@ -266,3 +359,27 @@ class KeyScale {
   }
   
 }
+
+extension Int {
+  var toNote: KeyScale.NoteName? {
+    guard self ∈ (0...127) else { return nil }
+    let n = self % 12
+    switch n {
+    case 0: return .C
+    case 1: return .Cis
+    case 2: return .D
+    case 3: return .Es
+    case 4: return .E
+    case 5: return .F
+    case 6: return .Fis
+    case 7: return .G
+    case 8: return .As
+    case 9: return .A
+    case 10: return .B
+    case 11: return .H
+    default: return nil
+    }
+  }
+}
+
+
