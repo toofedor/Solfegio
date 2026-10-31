@@ -8,41 +8,45 @@
 import SwiftUI
 
 struct MusicSettingsView: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
   @State var noteQuantity: Int = 4
   @State private var orientation = UIDevice.current.orientation
   @State var showSettings: Bool = false
+  @Namespace private var settingsShowing
   
   var body: some View {
-    VStack{
+    VStack(spacing: 5) {
       
-      if orientation.isLandscape || true {
-        
-        HStack(spacing: 5) {
-          Text("Звукоряд:")
-            .font(.system(.headline, design: .default, weight: .regular))
-          Text("\(musicSettings.scale.firstLowCase ? musicSettings.tonic.rawValue.lowercased() : musicSettings.tonic.rawValue)\(musicSettings.scale.name)")
-            .font(.system(.headline, design: .default, weight: .medium))
+      
+      HStack(spacing: 5) {
+        Text("Тональность:")
+          .font(.system(size: 30, weight: .thin))
+        Text("\(musicSettings.scale.firstLowCase ? musicSettings.tonic.rawValue.lowercased() : musicSettings.tonic.rawValue)\(musicSettings.scale.name)")
+          .font(.system(size: 35, weight: .light))
+      }
+      .fontWidth(.compressed)
+      
+      HStack {
+        Toggle(isOn: $musicSettings.indicatorsShown) {
+          Text("Индикаторы")
         }
-        .padding(.bottom, -15)
+        .frame(width: 170)
         
-        HStack {
-          Spacer()
-          Button {
-            showSettings = true
-          } label: {
-            Image(systemName: "gearshape.fill")
-              .resizable()
-              .frame(width: 30, height: 30)
-          }
+        Spacer()
+          .frame(width: 150)
+        
+        Button {
+          showSettings = true
+        } label: {
+          Image(systemName: "gearshape.fill")
+            .resizable()
+            .frame(width: 30, height: 30)
         }
-        .padding(.horizontal, 40)
-      } else {
-        MusicSettingsSheet()
-        .frame(width: 400)
-        
-      } 
+        .modifier(matchedTrans(matchID: "settingsShowing", IN: settingsShowing))
+      }
+      .padding(.horizontal, 40)
+      
       
     }
     .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
@@ -54,13 +58,15 @@ struct MusicSettingsView: View {
       musicSettings.refresh.toggle()
     }, content: {
       MusicSettingsSheet()
+        .presentationDetents([.medium, .large])
+        .modifier(navigationTrans(sourceID: "settingsShowing", IN: settingsShowing))
     })
   }
 }
 
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   MusicSettingsView()
     .environmentObject(audioEngine)

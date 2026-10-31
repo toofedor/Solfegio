@@ -9,9 +9,10 @@ import SwiftUI
 import SwiftMIDIFile
 
 struct PianoKeyboard: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
-  @State var keyboard: KeyboardHelper = KeyboardHelper()
+  @Binding var keyboard: KeyboardHelper
+  @State var exercise: Exercise?
 
   
   let whiteHeight: Double = 250
@@ -20,12 +21,21 @@ struct PianoKeyboard: View {
   let blackPortion: Double = 0.75
   
   
+  func offsetBlack(n: Int) -> Double {
+    let offset1: Double = whiteWidth / 10
+    let offset6: Double = whiteWidth / 7
+    switch n {
+    case 1: return -offset1
+    case 3: return offset1
+    case 6: return -offset6
+    case 10: return offset6
+    default: return 0
+    }
+  }
   
   
   var body: some View {
     HStack(alignment: .top, spacing: 0) {
-      let offset1: Double = whiteWidth / 10
-      let offset6: Double = whiteWidth / 7
       let blackWidth: Double = whiteWidth * blackPortion
       let blackHeight: Double = whiteHeight * heightPortion
       let whiteCount: Int = Array(musicSettings.firstActive..<musicSettings.lastActive).count(where: { $0 !∈ [1, 3, 6, 8, 10]})
@@ -38,7 +48,7 @@ struct PianoKeyboard: View {
           ForEach(firstKey..<lastKey) { note in
             let n = note % 12
             if n !∈ [1, 3, 6, 8, 10] {
-              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, note: note)
+              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, note: note, exercise: $exercise)
             }
           }
         }
@@ -48,47 +58,25 @@ struct PianoKeyboard: View {
         HStack(alignment: .top, spacing: 0) {
           ForEach(firstKey..<lastKey) { note in
             let n = note % 12
-            switch n {
-            case 0, 2, 4:
+            if n ∈ [1, 3, 6, 8, 10] {
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offsetBlack(n: n), keyboard: $keyboard, note: note, exercise: $exercise)
+              .frame(width: 0)
+            } else {
               VStack {}
                 .frame(width: whiteWidth, height: whiteHeight)
-            case 5, 7, 9, 11:
-              VStack {}
-                .frame(width: whiteWidth, height: whiteHeight)
-            case 1: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset1, keyboard: $keyboard, note: note)
             }
-            .frame(width: 0)
-            case 3: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset1, keyboard: $keyboard, note: note)
-            }
-            .frame(width: 0)
-            case 6: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset6, keyboard: $keyboard, note: note)
-            }
-            .frame(width: 0)
-            case 8: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: 0, keyboard: $keyboard, note: note)
-            }
-            .frame(width: 0)
-            case 10: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset6, keyboard: $keyboard, note: note)
-            }
-            .frame(width: 0)
-            default: HStack{}
-            }
+            
           }
         }
         .frame(height: blackHeight)
       }
       .frame(width: Double(whiteCount) * whiteWidth/2)
     }
-    .padding()
   }
 }
 
 #Preview { 
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   TuneExercise()
     .environmentObject(audioEngine)
@@ -96,9 +84,10 @@ struct PianoKeyboard: View {
 }
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
-  @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
-  PianoKeyboard()
+  @Previewable @StateObject var audioEngine = AudioEngine()
+  @Previewable @StateObject var musicSettings = MusicSettings()
+  @Previewable @State var keyboard = KeyboardHelper()
+  PianoKeyboard(keyboard: $keyboard)
     .environmentObject(audioEngine)
     .environmentObject(musicSettings)
 }

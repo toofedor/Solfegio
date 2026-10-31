@@ -16,7 +16,7 @@ struct MainScreen: View {
 }
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   MainScreen()
     .environmentObject(audioEngine)

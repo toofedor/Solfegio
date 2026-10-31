@@ -10,7 +10,7 @@ import SwiftUI
 import Observation
 import Combine
 
-class PianoAudioEngine: ObservableObject {
+class AudioEngine: ObservableObject {
   
   private let engine = AVAudioEngine()
   private let sampler = AVAudioUnitSampler()
@@ -32,6 +32,8 @@ class PianoAudioEngine: ObservableObject {
       }
     }
   }
+  
+  
   
   init() {
     
@@ -84,7 +86,6 @@ class PianoAudioEngine: ObservableObject {
   
   func noteOn(note: UInt8, velocity: UInt8 = 64, onChannel: UInt8 = 0) {
     sampler.startNote(note, withVelocity: velocity, onChannel: onChannel)
-//    print("\(note) \(velocity) \(onChannel)")
   }
   
   func noteOff(note: UInt8, onChannel: UInt8 = 0) {

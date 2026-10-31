@@ -8,64 +8,112 @@
 import SwiftUI
 
 struct TuneExercise: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
+  @State private var orientation = UIDevice.current.orientation
+  @State var keyboard = KeyboardHelper()
   @State var exercise: Exercise = Exercise()
   @State var noteQuantity: Int = 1
   @State var showSettings: Bool = false
+  @State var tuneNoteIndex: Int = 0
+  @State var stampOffset: Double = -150
   var body: some View {
-    VStack(spacing: 3) {
+    ZStack {
+      VStack {
+        Text("\(musicSettings.scale.firstLowCase ? musicSettings.tonic.rawValue.lowercased() : musicSettings.tonic.rawValue)\(musicSettings.scale.name)")
+          .foregroundStyle(.blackWhire)
+          .ignoresSafeArea()
+          .fontWidth(.compressed)
+          .font(.system(size: 250, weight: .regular))
+//          .font(.system(size: 150, weight: .black, design: .serif))
+          .rotationEffect(.degrees(-70))
+          .lineLimit(1)
+          .frame(minWidth: 1500)
+      }
       
-      MusicSettingsView()
-      
-      HStack(spacing: 0) {
-        Button { 
-          audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
-        } label: { 
-          Image(systemName: "memories")
-            .resizable()
-            .frame(width: 30, height: 30)
-        }
-        .padding(.horizontal, 30)
+      VStack(spacing: 0) {
         
-        Button { 
-          exercise.randomTune(diapason: UInt8(musicSettings.firstActive)...UInt8(musicSettings.lastActive), noteQuantity: noteQuantity, keyScale: KeyScale(tonic: musicSettings.tonic, scale: musicSettings.scale))
+        MusicSettingsView()
+          .padding(.bottom, 10)
+        
+        if musicSettings.refresh {
+          PianoKeyboard(keyboard: $keyboard, exercise: exercise)
+        } else {
+          PianoKeyboard(keyboard: $keyboard, exercise: exercise)
+        }
+        
+        
+        HStack(spacing: 0) {
+          Text("Быллы:").padding()
+          Text("\(exercise.points)")
+            .fontWidth(.compressed)
+            .font(.system(size: 50, weight: .thin))
+            .frame(width: 50)
           
-          audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
-        } label: { 
-          Image(systemName: "forward.fill")
-            .resizable()
-            .frame(width: 35, height: 25)
-        }
-        .padding(.horizontal, 20)
-        
-        Picker("Всего нот", selection: $noteQuantity) {
-          ForEach(1..<21) { n in
-            Text("\(n)")
-              .tag(n)
+          Button { 
+            keyboard.pressedKey = nil
+            exercise.tuneNoteIndex = 0
+            audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
+          } label: { 
+            Image(systemName: "memories")
+              .scaleEffect(2)
           }
+          .padding(.horizontal, 30)
+          
+          Button { 
+            exercise.tuneNoteIndex = 0
+            keyboard.pressedKey = nil
+            exercise.randomTune(diapason: UInt8(musicSettings.firstActive)...UInt8(musicSettings.lastActive), noteQuantity: noteQuantity, keyScale: KeyScale(tonic: musicSettings.tonic, scale: musicSettings.scale))
+            
+            audioEngine.playExercise(exercise, tempo: musicSettings.tempo)
+          } label: { 
+            Image(systemName: "forward.fill")
+              .scaleEffect(1.6)
+          }
+          .padding(.horizontal, 20)
+          
+          Picker("Всего нот", selection: $noteQuantity) {
+            ForEach(1..<21) { n in
+              Text("\(n)")
+                .tag(n)
+            }
+          }
+          Text("нот\(noteQuantity ∈ [2, 3, 4] ? "ы" : (noteQuantity == 1 ? "а" : ""))")
+            .padding(.leading, -10)
         }
-        Text("нот\(noteQuantity ∈ [2, 3, 4] ? "ы" : (noteQuantity == 1 ? "а" : ""))")
-          .padding(.leading, -10)
+        
+        
       }
-      
-      if musicSettings.refresh {
-        PianoKeyboard()
-      } else {
-        PianoKeyboard()
+      if musicSettings.indicatorsShown {
+        SuccessStampView(trigger: $exercise.win)
+          .offset(y: stampOffset)
       }
-      
     }
     .onAppear {
       if exercise.tune.isEmpty {
         exercise.randomTune(diapason: 56...70, noteQuantity: noteQuantity, keyScale: KeyScale(tonic: Note.WithAlteration(.A), scale: .mollHarmonic))
+      }
+      if orientation.isLandscape {
+        stampOffset = 150
+      } else {
+        stampOffset = -150
+      }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+      if UIDevice.current.orientation.isValidInterfaceOrientation {
+        orientation = UIDevice.current.orientation
+        if orientation.isLandscape {
+          stampOffset = 150
+        } else {
+          stampOffset = -150
+        }
       }
     }
   }
 }
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   MainScreen()
     .environmentObject(audioEngine)
@@ -73,7 +121,7 @@ struct TuneExercise: View {
 }
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   TuneExercise()
     .environmentObject(audioEngine)

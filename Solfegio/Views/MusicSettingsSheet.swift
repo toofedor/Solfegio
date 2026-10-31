@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MusicSettingsSheet: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
   @State var noteQuantity: Int = 4
   @State var showSettings: Bool = false
@@ -17,10 +17,10 @@ struct MusicSettingsSheet: View {
     VStack(spacing: 15) {
       
       HStack(spacing: 5) {
-        Text("Звукоряд:")
-          .font(.system(.headline, design: .default, weight: .regular))
-        Text("\(musicSettings.scale.firstLowCase ? musicSettings.tonic.rawValue.lowercased() : musicSettings.tonic.rawValue)\(musicSettings.scale.name)")
-          .font(.system(.headline, design: .default, weight: .medium))
+        Text("Звукоряд")
+          .font(.system(.title2, design: .default, weight: .regular))
+//        Text("| \(musicSettings.scale.firstLowCase ? musicSettings.tonic.rawValue.lowercased() : musicSettings.tonic.rawValue)\(musicSettings.scale.name)")
+//          .font(.system(.headline, design: .default, weight: .medium))
       }
       .padding(.bottom, -15)
       
@@ -45,32 +45,13 @@ struct MusicSettingsSheet: View {
       }
       .padding(.bottom, -20)
       
-//      HStack(spacing: 5) {
-//        Text("Нижняя ступень")
-//        // Нижняя ступень
-//        Picker("", selection: $musicSettings.btmDegree) {
-//          ForEach(1..<8) { note in
-//            Text("\(note.toRoman)").tag(note)
-//          }
-//          .lineLimit(1)
-//        }
-//        .frame(width: 60)
-//        
-//        // Звуков всего
-//        Picker("", selection: $musicSettings.degreeQuantity) {
-//          ForEach(1..<21) { note in
-//            Text("\(note)").tag(note)
-//          }
-//        }
-//        .frame(width: 60)
-//        
-//        Text("звуков")
-//      }
+      
       
       DiapasonHandles()
       
       
       Text("Темп")
+        .font(.system(.title2, design: .default, weight: .regular))
         .padding(.bottom, -16)
       
       HStack(spacing: 5) {
@@ -100,6 +81,7 @@ struct MusicSettingsSheet: View {
       VStack(spacing: 0) {
         HStack {
           Text("Тембр")
+            .font(.system(.title2, design: .default, weight: .regular))
           
           Picker("", selection: $musicSettings.selInstrument) {
             ForEach(0..<128, id: \.self) { number in
@@ -137,7 +119,7 @@ struct MusicSettingsSheet: View {
 
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   MusicSettingsSheet()
     .environmentObject(audioEngine)

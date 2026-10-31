@@ -9,9 +9,10 @@ import SwiftUI
 import SwiftMIDIFile
 
 struct KeyboardDiapason: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
   @State var keyboard: KeyboardHelper = KeyboardHelper()
+  @State var exercise: Exercise? = nil
   let firstKey: Int = 48
   let lastKey: Int = 85
   @Binding var firstActive: Int
@@ -30,6 +31,18 @@ struct KeyboardDiapason: View {
   }
   func opacityInRange(_ n: Int, _ factor: Double = 0.5) -> Double {
     return inDiapason(n) ? factor : 1.0
+  }
+  
+  func offsetBlack(n: Int) -> Double {
+    let offset1: Double = whiteWidth / 10
+    let offset6: Double = whiteWidth / 7
+    switch n {
+    case 1: return -offset1
+    case 3: return offset1
+    case 6: return -offset6
+    case 10: return offset6
+    default: return 0
+    }
   }
   
   
@@ -64,7 +77,7 @@ struct KeyboardDiapason: View {
           ForEach(firstKey..<lastKey) { note in
             let n = note % 12
             if n !∈ [1, 3, 6, 8, 10] {
-              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, note: note)
+              NoteWhiteKey(width: whiteWidth, height: whiteHeight, keyboard: $keyboard, note: note, exercise: $exercise)
             }
           }
         }
@@ -74,35 +87,14 @@ struct KeyboardDiapason: View {
         HStack(alignment: .top, spacing: 0) {
           ForEach(firstKey..<lastKey) { note in
             let n = note % 12
-            switch n {
-            case 0, 2, 4:
+            if n ∈ [1, 3, 6, 8, 10] {
+              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offsetBlack(n: n), keyboard: $keyboard, note: note, inDiapasone: inDiapason(note), exercise: $exercise)
+              .frame(width: 0)
+            } else {
               VStack {}
                 .frame(width: whiteWidth, height: whiteHeight)
-            case 5, 7, 9, 11:
-              VStack {}
-                .frame(width: whiteWidth, height: whiteHeight)
-            case 1: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset1, keyboard: $keyboard, note: note, inDiapasone: inDiapason(note))
             }
-            .frame(width: 0)
-            case 3: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset1, keyboard: $keyboard, note: note, inDiapasone: inDiapason(note))
-            }
-            .frame(width: 0)
-            case 6: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: -offset6, keyboard: $keyboard, note: note, inDiapasone: inDiapason(note))
-            }
-            .frame(width: 0)
-            case 8: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: 0, keyboard: $keyboard, note: note, inDiapasone: inDiapason(note))
-            }
-            .frame(width: 0)
-            case 10: HStack{
-              NoteBlackKey(width: blackWidth, height: blackHeight, offset: offset6, keyboard: $keyboard, note: note, inDiapasone: inDiapason(note))
-            }
-            .frame(width: 0)
-            default: HStack{}
-            }
+            
           }
         }
         .frame(height: blackHeight)
@@ -119,7 +111,7 @@ struct KeyboardDiapason: View {
 
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   KeyboardDiapason(firstActive: .constant(57), lastActive: .constant(69))
     .environmentObject(audioEngine)

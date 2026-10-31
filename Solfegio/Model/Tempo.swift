@@ -14,7 +14,7 @@ class Tempo {
     return 60.0 / (bpm * countingDuration.rawValue)
   }
   
-  init(bpm: Double = 120, countingDuration: Note.NoteDuration = .n4) {
+  init(_ bpm: Double = 120, countingDuration: Note.NoteDuration = .n4) {
     self.bpm = bpm
     self.countingDuration = countingDuration
   }

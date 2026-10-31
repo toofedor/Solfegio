@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftMIDIFile
 
 struct DiapasonHandles: View {
-  @EnvironmentObject var audioEngine: PianoAudioEngine
+  @EnvironmentObject var audioEngine: AudioEngine
   @EnvironmentObject var musicSettings: MusicSettings
   @State var firstKey: Int = 48
   @State var lastKey: Int = 85
@@ -89,7 +89,7 @@ struct DiapasonHandles: View {
 
 
 #Preview {
-  @Previewable @StateObject var audioEngine: PianoAudioEngine = PianoAudioEngine()
+  @Previewable @StateObject var audioEngine: AudioEngine = AudioEngine()
   @Previewable @StateObject var musicSettings: MusicSettings = MusicSettings()
   DiapasonHandles()
     .environmentObject(audioEngine)

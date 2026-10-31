@@ -19,8 +19,7 @@ import Combine
   var keyScale: KeyScale = KeyScale(tonic: Note.WithAlteration(), scale: .mollNatural)
   var tonic: KeyScale.NoteName = .A
   var scale: KeyScale.Scale = .mollHarmonic
-  var btmDegree: Int = 7
-  var degreeQuantity: Int = 9
+  var indicatorsShown: Bool = false
   
   var firstActive: Int = 56
   var lastActive: Int = 70

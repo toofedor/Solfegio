@@ -27,7 +27,7 @@ class KeyScale {
   }
   
   func buildPitchSet() -> [UInt8] {
-    let root: UInt8 = UInt8(Int(tonic.noteName.midi) + tonic.alteration)
+    let root: UInt8 = UInt8(Int(tonic.mainName.midi) + tonic.alteration)
     var pitchSet: [UInt8] = [root]
     var curNote: UInt8 = root
     while curNote <= 127 {
@@ -78,41 +78,6 @@ class KeyScale {
     case Gis
     case Gisis 
     
-    var nameWithSign: String {
-      switch self {
-      case .Ases : "A♭♭"
-      case .As : "A♭"
-      case .A : "A"
-      case .Ais : "A♯"
-      case .Aisis : "A𝄪"
-      case .Bes : "H♭♭"
-      case .B : "B"
-      case .H : "H"
-      case .His : "H♯"
-      case .Ces : "C♭"
-      case .C : "C"
-      case .Cis : "C♯"
-      case .Cisis : "C𝄪"
-      case .Deses : "D♭♭"
-      case .Des : "D♭"
-      case .D : "D"
-      case .Dis : "D♯"
-      case .Disis : "D𝄪"
-      case .Eses : "E♭♭"
-      case .Es : "E♭"
-      case .E : "E"
-      case .Eis : "E♯"
-      case .Fes : "F♭"
-      case .F : "F"
-      case .Fis : "F♯"
-      case .Fisis : "F𝄪"
-      case .Geses : "G♭♭"
-      case .Ges : "G♭"
-      case .G : "G"
-      case .Gis : "G♯"
-      case .Gisis : "G𝄪"
-      }
-    }
     
     var id: String { self.rawValue }
     
@@ -203,6 +168,16 @@ class KeyScale {
       }
     }
     
+    var nameWithSign: String {
+      var sign: String = ""
+      switch alteration {
+      case ..<0: sign = String(repeating: "♭", count: -alteration)
+      case 1...: sign = String(repeating: "𝄪", count: alteration / 2) + String(repeating: "♯", count: alteration % 2)
+      default: sign = ""
+      }
+      return "\(self.mainNote)\(sign)" 
+    }
+    
     var alteration: Int {
       switch self {
       case .Ases: return -2
@@ -244,14 +219,14 @@ class KeyScale {
   
   enum Scale: String, CaseIterable, Identifiable {
     case durNatural
-    case mollNatural
     case durHarmonic
-    case mollHarmonic
     case durMelodic
-    case mollMelodic
     case durDoubleHarmonic
-    case mollDoubleHarmonic
     case durPentatonic
+    case mollNatural
+    case mollHarmonic
+    case mollMelodic
+    case mollDoubleHarmonic
     case mollPentatonic
     case bluesScale
     case chromatic
@@ -263,16 +238,16 @@ class KeyScale {
     var buildMidi: [UInt8] {
       switch self {
       case .durNatural: return [0, 2, 4, 5, 7, 9, 11]
-      case .mollNatural: return [0, 2, 3, 5, 7, 8, 10]
       case .durHarmonic: return [0, 2, 4, 5, 7, 8, 11]
-      case .mollHarmonic: return [0, 2, 3, 5, 7, 8, 11]
       case .durMelodic: return [0, 2, 4, 5, 7, 8, 10]
-      case .mollMelodic: return [0, 2, 3, 5, 7, 9, 11]
       case .durDoubleHarmonic: return [0, 1, 4, 5, 7, 8, 11]
-      case .mollDoubleHarmonic: return [0, 2, 3, 6, 7, 8, 11]
       case .durPentatonic: return [0, 2, 4, 7, 9]
-      case .mollPentatonic: return [0, 3, 5, 7, 11]
-      case .bluesScale: return [0, 4, 5, 7, 11]
+      case .mollNatural: return [0, 2, 3, 5, 7, 8, 10]
+      case .mollHarmonic: return [0, 2, 3, 5, 7, 8, 11]
+      case .mollMelodic: return [0, 2, 3, 5, 7, 9, 11]
+      case .mollDoubleHarmonic: return [0, 2, 3, 6, 7, 8, 11]
+      case .mollPentatonic: return [0, 3, 5, 7, 10]
+      case .bluesScale: return [0, 3, 5, 6, 7, 10]
       case .chromatic: return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       case .wholetone: return [0, 2, 4, 6, 8, 10]
       case .rimKor: return [0, 2, 3, 5, 6, 8, 9, 11]
@@ -310,10 +285,10 @@ class KeyScale {
       case .mollDoubleHarmonic: "-moll дв. гарм"
       case .durPentatonic: "-dur пентатоника"
       case .mollPentatonic: "-moll пентатоника"
-      case .bluesScale: "Блюзовая"
-      case .chromatic: "Хоматическая"
-      case .wholetone: "Целотоновая"
-      case .rimKor: "Уменьшенная"
+      case .bluesScale: " блюзовая"
+      case .chromatic: " хоматическая"
+      case .wholetone: " целотоновая"
+      case .rimKor: " уменьшенный"
       }
     }
     
@@ -356,6 +331,9 @@ class KeyScale {
       }
     }
     
+    enum Degree {
+      case I, II, III, IV, V, VI, VII
+    }
   }
   
 }

@@ -76,26 +76,22 @@ class Note {
   }
   
   class WithAlteration {
-    var noteName: noteShortName
+    var mainName: noteShortName
     var alteration: Int
     
     var ruName: String { 
       var sign: String = ""
       switch alteration {
-//      case -2: sign = "-дубль-бемоль"
-//      case -1: sign = "-бемоль"
       case 0: sign = ""
-//      case 1: sign = "-диез"
-//      case 2: sign = "-дубль-диез"
       case 1...: sign = String(repeating: "𝄪", count: alteration / 2) + String(repeating: "♯", count: alteration % 2)
         
       default: sign = String(repeating: "♭", count: -alteration)
       }
-      return noteName.ruName + sign 
+      return mainName.ruName + sign 
     }
     
     init(_ noteName: noteShortName = .A, alt alteration: Int = 0) {
-      self.noteName = noteName
+      self.mainName = noteName
       self.alteration = alteration
     }
     

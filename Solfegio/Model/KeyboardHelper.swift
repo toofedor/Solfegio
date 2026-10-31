@@ -12,7 +12,8 @@ import Combine
 
 @Observable class KeyboardHelper: ObservableObject {
   var keys: [Key]
-  var audioEngine = PianoAudioEngine()
+  var audioEngine = AudioEngine()
+  var pressedKey: Int?
   
   init() {
     var keys: [Key] = []
@@ -31,6 +32,7 @@ import Combine
 @Observable class Key: ObservableObject {
   let number: Int
   var isOn: Bool = false
+  var correct: Bool? = nil
   
   init(number: Int) {
     self.number = number
